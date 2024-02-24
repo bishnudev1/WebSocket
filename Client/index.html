@@ -12,8 +12,26 @@
 </body>
 <script>
     const socket = new WebSocket('ws://localhost:8080');
+    const myName = prompt('Enter your name: ');
+    if(myName === null || myName === ''){
+        alert('Please enter your name');
+        window.location.reload();
+    }
+    
     function sendMessage(params) {
-        socket.send(document.getElementById('message').value);
+        if(socket.readyState === WebSocket.OPEN) {
+            if(document.getElementById('message').value !== ''){
+                // socket.send(`${myName}: ${document.getElementById('message').value}`);
+                socket.send(myName+': '+document.getElementById('message').value);
+                document.getElementById('message').value = '';
+            }
+            else{
+                alert('Please enter a message');
+            }
+        }
+        else{
+            alert('Connection is closed');
+        }
     }
 </script>
 </html>
